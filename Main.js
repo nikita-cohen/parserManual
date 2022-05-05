@@ -1,6 +1,11 @@
 const {Worker, workerData} = require("worker_threads");
 const schedule = require('node-schedule')
 
+const express = require('express');
+
+const app = express();
+app.use(express.json());
+
 const data = [
     {url : "http://babycare.manualsonline.com/"},
     {url : "http://caraudio.manualsonline.com/"},
@@ -46,10 +51,8 @@ schedule.scheduleJob('1 45 * * *', () => {
     runWorker().then();
 })
 
-const express = require('express');
 
-const app = express();
 
-app.use(express.json());
+
 
 app.listen(8000)
