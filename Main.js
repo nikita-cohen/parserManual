@@ -45,3 +45,11 @@ async function runWorker() {
 schedule.scheduleJob('1 45 * * *', () => {
     runWorker().then();
 })
+
+const express = require('express');
+
+const app = express();
+
+app.use(express.json());
+
+app.listen(8000)
