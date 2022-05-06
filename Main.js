@@ -1,10 +1,6 @@
 const {Worker, workerData} = require("worker_threads");
 const schedule = require('node-schedule')
 
-const express = require('express');
-
-const app = express();
-app.use(express.json());
 
 const data = [
     {url : "http://babycare.manualsonline.com/"},
@@ -36,7 +32,6 @@ async function runWorker() {
                 workerData : obj
             })
 
-            console.log(index, " ", process.memoryUsage.rss())
             worker.on("message", resolve);
             worker.on("error", reject);
             worker.on("exit", (code) => {
@@ -47,12 +42,23 @@ async function runWorker() {
 
 }
 
-schedule.scheduleJob('1 45 * * *', () => {
-    runWorker().then();
-})
+function resetAtMidnight() {
+    let now = new Date();
+    let night = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1, // the next day, ...
+        0, 0, 0 // ...at 00:00:00 hours
+    );
 
+    let msToMidnight = night.getTime() - now.getTime();
 
+    console.log(msToMidnight)
+    setTimeout(function() {
+        runWorker().then();              //      <-- This is the function being called at midnight.
+        resetAtMidnight();    //      Then, reset again next midnight.
+    }, msToMidnight);
+}
 
+resetAtMidnight();
 
-
-app.listen(8000)

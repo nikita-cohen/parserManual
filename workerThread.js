@@ -31,8 +31,6 @@ async function parseData(url) {
                     });
             })
 
-            //0503425249
-
             obj.category = categoryArray[0];
 
             const elementArray = await page.evaluate(() => {
