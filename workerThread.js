@@ -54,7 +54,7 @@ async function parseData(url) {
                     obj.url = x.href;
                     obj.title = x.text;
 
-                    axios.post("http://localhost:8099/manual/online/", obj)
+                    axios.post("https://search.findmanual.guru/manual/online/", obj)
                         .then(data => console.log("ok " + index))
                         .catch(e => console.log(e));
                 })
